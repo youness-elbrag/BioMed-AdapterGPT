@@ -317,6 +317,113 @@ class OFAClassificationHead(nn.Module):
         return x
 
 
+@register_model_architecture("ofa", "ofa_large")
+def ofa_large_architecture(args):
+    args.encoder_embed_path = getattr(args, "encoder_embed_path", None)
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 1024)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 4 * 1024)
+    args.encoder_layers = getattr(args, "encoder_layers", 12)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 16)
+    args.encoder_normalize_before = getattr(args, "encoder_normalize_before", True)
+    args.encoder_learned_pos = getattr(args, "encoder_learned_pos", True)
+    args.decoder_embed_path = getattr(args, "decoder_embed_path", None)
+    args.decoder_embed_dim = getattr(args, "decoder_embed_dim", args.encoder_embed_dim)
+    args.decoder_ffn_embed_dim = getattr(
+        args, "decoder_ffn_embed_dim", args.encoder_ffn_embed_dim
+    )
+    args.decoder_layers = getattr(args, "decoder_layers", 12)
+    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
+    args.decoder_normalize_before = getattr(args, "decoder_normalize_before", True)
+    args.decoder_learned_pos = getattr(args, "decoder_learned_pos", True)
+    args.attention_dropout = getattr(args, "attention_dropout", 0.0)
+    args.relu_dropout = getattr(args, "relu_dropout", 0.0)
+    args.dropout = getattr(args, "dropout", 0.0)
+    args.max_target_positions = getattr(args, "max_target_positions", 1024)
+    args.max_source_positions = getattr(args, "max_source_positions", 1024)
+    args.adaptive_softmax_cutoff = getattr(args, "adaptive_softmax_cutoff", None)
+    args.adaptive_softmax_dropout = getattr(args, "adaptive_softmax_dropout", 0)
+    args.share_decoder_input_output_embed = getattr(
+        args, "share_decoder_input_output_embed", True
+    )
+    args.share_all_embeddings = getattr(args, "share_all_embeddings", True)
+
+    args.decoder_output_dim = getattr(
+        args, "decoder_output_dim", args.decoder_embed_dim
+    )
+    args.decoder_input_dim = getattr(args, "decoder_input_dim", args.decoder_embed_dim)
+
+    args.no_scale_embedding = getattr(args, "no_scale_embedding", True)
+    args.layernorm_embedding = getattr(args, "layernorm_embedding", True)
+
+    args.activation_fn = getattr(args, "activation_fn", "gelu")
+    args.pooler_activation_fn = getattr(args, "pooler_activation_fn", "tanh")
+    args.pooler_dropout = getattr(args, "pooler_dropout", 0.0)
+    args.pooler_classifier = getattr(args, "pooler_classifier", "mlp")
+
+    args.resnet_drop_path_rate = getattr(args, "resnet_drop_path_rate", 0.0)
+    args.encoder_drop_path_rate = getattr(args, "encoder_drop_path_rate", 0.0)
+    args.decoder_drop_path_rate = getattr(args, "decoder_drop_path_rate", 0.0)
+
+    args.resnet_type = getattr(args, "resnet_type", "resnet152")
+    args.token_bucket_size = getattr(args, "token_bucket_size", 256)
+    args.image_bucket_size = getattr(args, "image_bucket_size", 42)
+
+    args.freeze_encoder_embedding = getattr(args, "freeze_encoder_embedding", False)
+    args.freeze_decoder_embedding = getattr(args, "freeze_decoder_embedding", False)
+    args.add_type_embedding = getattr(args, "add_type_embedding", True)
+    args.attn_scale_factor = getattr(args, "attn_scale_factor", 2)
+
+    args.code_image_size = getattr(args, "code_image_size", 128)
+    args.patch_layernorm_embedding = getattr(args, "patch_layernorm_embedding", True)
+    args.code_layernorm_embedding = getattr(args, "code_layernorm_embedding", True)
+    args.entangle_position_embedding = getattr(args, "entangle_position_embedding", False)
+    args.disable_entangle = getattr(args, "disable_entangle", False)
+    args.sync_bn = getattr(args, "sync_bn", False)
+
+    args.scale_attn = getattr(args, "scale_attn", False)
+    args.scale_fc = getattr(args, "scale_fc", False)
+    args.scale_heads = getattr(args, "scale_heads", False)
+    args.scale_resids = getattr(args, "scale_resids", False)
+
+    args.orig_patch_image_size = getattr(args, "orig_patch_image_size", 256)
+
+
+@register_model_architecture("ofa", "ofa_base")
+def ofa_base_architecture(args):
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 768)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 4 * 768)
+    args.encoder_layers = getattr(args, "encoder_layers", 6)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 12)
+    args.decoder_layers = getattr(args, "decoder_layers", 6)
+    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 12)
+    args.resnet_type = getattr(args, "resnet_type", "resnet101")
+    ofa_large_architecture(args)
+
+
+@register_model_architecture("ofa", "ofa_huge")
+def ofa_huge_architecture(args):
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 1280)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 4 * 1280)
+    args.encoder_layers = getattr(args, "encoder_layers", 24)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 16)
+    args.decoder_layers = getattr(args, "decoder_layers", 12)
+    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
+    args.resnet_type = getattr(args, "resnet_type", "resnet152")
+    ofa_large_architecture(args)
+
+
+@register_model_architecture("ofa", "ofa_medium")
+def ofa_medium_architecture(args):
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 512)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 4 * 512)
+    args.encoder_layers = getattr(args, "encoder_layers", 4)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 8)
+    args.decoder_layers = getattr(args, "decoder_layers", 4)
+    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 8)
+    args.resnet_type = getattr(args, "resnet_type", "resnet101")
+    ofa_large_architecture(args)
+
+
 @register_model_architecture("ofa", "ofa_tiny")
 def ofa_tiny_architecture(args):
     args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 256)
